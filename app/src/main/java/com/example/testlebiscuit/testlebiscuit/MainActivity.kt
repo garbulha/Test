@@ -19,37 +19,36 @@ class MainActivity : AppCompatActivity() {
 
         sliding_up_panel_layout.setAdapter(object : SlidingUpPanelLayout.Adapter() {
 
-            private val mSize = arrayListOf("a","a","a","a","a").size
+            private val mList = arrayListOf(main1(baseContext),main2(baseContext))
 
             override fun getItemCount(): Int {
-                return mSize
+                return mList.size
             }
 
             override fun onCreateSlidingPanel(position: Int): ISlidingUpPanel<*> {
-                val panel = WeatherPanelView(this@DemoActivity1)
+                val panel = mList[position]
                 if (position == 0) {
-                    panel.setSlideState(EXPANDED)
+                    panel.slideState = EXPANDED
                 } else {
-                    panel.setSlideState(HIDDEN)
+                    panel.slideState = HIDDEN
                 }
 
                 return panel
             }
 
             override fun onBindView(panel: ISlidingUpPanel<*>, position: Int) {
-                if (mSize == 0)
+                if (mList.size == 0)
                     return
 
-                val BasePanel = panel as BaseWeatherPanelView
-                BasePanel.setWeatherModel(mWeatherList.get(position))
-                BasePanel.setClickable(true)
-                BasePanel.setOnClickListener(View.OnClickListener {
+                val BasePanel = panel as Base
+                BasePanel.isClickable = true
+                BasePanel.setOnClickListener {
                     if (panel.slideState != EXPANDED) {
                         sliding_up_panel_layout.expandPanel()
                     } else {
                         sliding_up_panel_layout.collapsePanel()
                     }
-                })
+                }
             }
         })
 
